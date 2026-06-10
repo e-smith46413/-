@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - 墨韵</title>
+    <meta http-equiv="refresh" content="0;url=index.html">
+</head>
+<body>
+    <p>正在跳转至首页...</p>
+    <script>window.location.href = 'index.html';</script>
+</body>
+</html>
+
+        <div class="relative z-10 pt-28 pb-12 px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12 page-enter">
+                    <h1 class="brush-title text-7xl text-gray-800 mb-3" id="welcomeTitle">欢迎回来，墨韵</h1>
+                    <p class="text-gray-700 text-xl" style="font-family: 'ZCOOL XiaoWei', serif; opacity: 0.7;" id="welcomeSubtitle">今天是美好的一天</p>
+                    <div class="ink-divider mx-auto" style="width: 40%; margin-top: 30px;"></div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 page-enter" style="animation-delay: 0.1s;">
+                    <div class="stat-card"><span class="stat-number" id="views">0</span><span class="stat-label">访问量</span></div>
+                    <div class="stat-card"><span class="stat-number" id="followers">0</span><span class="stat-label">粉丝量</span></div>
+                    <div class="stat-card"><span class="stat-number" id="likes">0</span><span class="stat-label">获赞数</span></div>
+                    <div class="stat-card"><span class="stat-number" id="posts">0</span><span class="stat-label">作品数</span></div>
+                </div>
+
+                <div class="mb-12 page-enter" style="animation-delay: 0.2s;">
+                    <h2 class="brush-title text-5xl text-gray-800 mb-8">快捷操作</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                        <div class="action-card" onclick="navigateTo('browse')">
+                            <div class="action-icon">📚</div><h3 class="action-title">浏览作品</h3><p class="action-desc">发现精彩内容</p>
+                        </div>
+                        <div class="action-card" onclick="navigateTo('create')">
+                            <div class="action-icon">✍️</div><h3 class="action-title">开始创作</h3><p class="action-desc">展示您的艺术才华</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list-card page-enter" style="animation-delay: 0.3s;">
+                    <h2 class="brush-title text-5xl text-gray-800 mb-8">最近动态</h2>
+                    <div class="space-y-2" id="activityList">
+                        <div class="list-item"><div class="list-avatar">墨</div><div class="list-content"><p class="list-text"><span style="font-family: 'Ma Shan Zheng', cursive; font-size: 1.25rem;">墨韵</span> 刚刚发布了一篇新作品</p><p class="list-time">2 分钟前</p></div></div>
+                        <div class="list-item"><div class="list-avatar">雅</div><div class="list-content"><p class="list-text"><span style="font-family: 'Ma Shan Zheng', cursive; font-size: 1.25rem;">小雅</span> 评论了您的作品</p><p class="list-time">15 分钟前</p></div></div>
+                        <div class="list-item"><div class="list-avatar">书</div><div class="list-content"><p class="list-text"><span style="font-family: 'Ma Shan Zheng', cursive; font-size: 1.25rem;">书友</span> 关注了您</p><p class="list-time">1 小时前</p></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ink-seal">墨<br/>韵</div>
+    </div>
+
+    <script src="js/shared.js"></script>
+    <script>
+        (function() {
+            var savedEmail = getSavedEmail();
+            if (savedEmail) {
+                var displayName = savedEmail.split('@')[0];
+                try {
+                    var users = getRegisteredUsers();
+                    var found = users.filter(function(u) { return u.email === savedEmail; })[0];
+                    if (found) displayName = found.username;
+                } catch(e) {}
+                document.getElementById('welcomeTitle').textContent = '欢迎回来，' + displayName;
+            }
+        })();
+
+        function navigateTo(page) { window.location.href = page + '.html'; }
+
+        function animateNumber(el, target, duration) {
+            var start = 0, increment = target / (duration / 16);
+            var timer = setInterval(function() {
+                start += increment;
+                if (start >= target) { el.textContent = target.toLocaleString(); clearInterval(timer); }
+                else { el.textContent = Math.floor(start).toLocaleString(); }
+            }, 16);
+        }
+
+        window.addEventListener('load', function() {
+            var ARTWORKS_KEY = 'moyun_user_artworks';
+            setTimeout(function() {
+                var totalViews = 0, totalLikes = 0, totalPosts = 0;
+                try {
+                    var stored = localStorage.getItem(ARTWORKS_KEY);
+                    if (stored) {
+                        var artworks = JSON.parse(stored);
+                        totalPosts = artworks.length;
+                        artworks.forEach(function(a) { totalViews += parseInt(a.views) || 0; totalLikes += a.likes || 0; });
+                    }
+                } catch(e) {}
+                var followers = Math.floor(Math.random() * 200) + 50;
+                animateNumber(document.getElementById('views'), totalViews, 1500);
+                animateNumber(document.getElementById('followers'), followers, 1200);
+                animateNumber(document.getElementById('likes'), totalLikes, 1400);
+                animateNumber(document.getElementById('posts'), totalPosts, 1000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>

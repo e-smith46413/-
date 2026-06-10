@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="classic" data-font="medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浏览作品 - 墨韵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/ink-theme.css">
+</head>
+<body>
+    <div class="min-h-screen w-full relative overflow-hidden">
+        <div id="background" class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('public/background.jpg')"></div>
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <div class="ink-scatter scatter-brush-1"></div><div class="ink-scatter scatter-brush-2"></div>
+            <div class="ink-scatter scatter-brush-3"></div><div class="ink-scatter scatter-brush-4"></div>
+        </div>
+
+        <nav class="ink-nav">
+            <div class="flex items-center justify-between max-w-6xl mx-auto">
+                <a href="index.html" class="ink-nav-brand">墨韵</a>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="ink-nav-link">首页</a>
+                    <a href="browse.html" class="ink-nav-link active">浏览作品</a>
+                    <a href="culture.html" class="ink-nav-link">书法文化</a>
+                    <a href="create.html" class="ink-nav-link">开始创作</a>
+                    <a href="profile.html" class="ink-nav-link">个人中心</a>
+                    <a href="settings.html" class="ink-nav-link">设置</a>
+                    <a href="login.html" class="ink-nav-link" onclick="handleLogout(event)">退出</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="relative z-10 pt-28 pb-12 px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-10 page-enter">
+                    <h1 class="brush-title text-6xl text-gray-800 mb-3">翰墨丹青</h1>
+                    <p class="text-gray-700 text-xl" style="font-family: 'ZCOOL XiaoWei', serif; opacity: 0.7;">品鉴名家之作，感悟水墨之韵</p>
+                    <div class="ink-divider mx-auto" style="width: 40%; margin-top: 30px;"></div>
+                </div>
+
+                <div class="filter-bar page-enter" style="animation-delay: 0.1s;">
+                    <div class="text-center">
+                        <span class="category-tag active" onclick="filterCategory(this, 'all')">全部作品</span>
+                        <span class="category-tag" onclick="filterCategory(this, '行书')">行书</span>
+                        <span class="category-tag" onclick="filterCategory(this, '楷书')">楷书</span>
+                        <span class="category-tag" onclick="filterCategory(this, '草书')">草书</span>
+                        <span class="category-tag" onclick="filterCategory(this, '隶书')">隶书</span>
+                        <span class="category-tag" onclick="filterCategory(this, '篆书')">篆书</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 page-enter" id="allArtworksGrid" style="animation-delay: 0.2s;">
+                </div>
+            </div>
+        </div>
+        <div class="ink-seal">墨<br/>韵</div>
+    </div>
+
+    <!-- ===== Footer ===== -->
+    <div class="site-footer" style="position: relative; z-index: 10; border-top: 1px solid var(--ink-border); padding: 30px 20px 20px; margin-top: 60px; text-align: center;">
+        <div class="footer-links" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap;">
+            <a href="index.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">首页</a>
+            <a href="browse.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">浏览作品</a>
+            <a href="culture.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">书法文化</a>
+            <a href="create.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">开始创作</a>
+            <a href="profile.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">个人中心</a>
+            <a href="settings.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">设置</a>
+        </div>
+        <p style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-muted); line-height: 1.8;">© 2024 墨韵 · 水墨书法分享社区 &nbsp;|&nbsp; 传承中华文化，感悟笔墨之美</p>
+        <p style="font-family: 'ZCOOL XiaoWei', serif; font-size: 12px; color: var(--ink-text-muted); opacity: 0.6; margin-top: 4px;">本网站仅供学习交流使用</p>
+    </div>
+
+    <script src="js/shared.js"></script>
+    <script>
+        var ARTWORKS_STORAGE_KEY = 'moyun_user_artworks';
+
+        var classicArtworks = [
+            { id: '岳阳楼记', title: '岳阳楼记', author: '范仲淹', category: '行书', views: '12,580', image: 'public/岳阳楼记.jpg', timestamp: new Date('2024-01-15').getTime(), isClassic: true },
+            { id: '兰亭序', title: '兰亭序', author: '王羲之', category: '行书', views: '15,234', image: 'public/兰亭序.jpg', timestamp: new Date('2024-01-10').getTime(), isClassic: true },
+            { id: '祭侄文稿', title: '祭侄文稿', author: '颜真卿', category: '行书', views: '10,892', image: 'public/祭侄文稿.jpg', timestamp: new Date('2024-01-20').getTime(), isClassic: true },
+            { id: '九成宫醴泉铭', title: '九成宫醴泉铭', author: '欧阳询', category: '楷书', views: '9,456', image: 'public/九成宫醴泉铭.jpg', timestamp: new Date('2024-01-25').getTime(), isClassic: true },
+            { id: '自叙帖', title: '自叙帖', author: '怀素', category: '草书', views: '11,203', image: 'public/自叙帖.jpg', timestamp: new Date('2024-02-01').getTime(), isClassic: true },
+            { id: '张迁碑', title: '张迁碑', author: '佚名', category: '隶书', views: '8,764', image: 'public/张迁碑.jpg', timestamp: new Date('2024-02-05').getTime(), isClassic: true }
+        ];
+
+        function loadAllArtworks() {
+            try {
+                var allArtworks = classicArtworks.slice();
+                var stored = localStorage.getItem(ARTWORKS_STORAGE_KEY);
+                if (stored) {
+                    var userArtworks = JSON.parse(stored);
+                    userArtworks.forEach(function(a) {
+                        a.isClassic = false;
+                        if (!a.timestamp) a.timestamp = new Date().getTime();
+                    });
+                    allArtworks = allArtworks.concat(userArtworks);
+                }
+                allArtworks.sort(function(a, b) { return b.timestamp - a.timestamp; });
+                renderArtworks(allArtworks);
+            } catch(e) { console.error('加载作品失败:', e); }
+        }
+
+        function renderArtworks(artworks) {
+            var grid = document.getElementById('allArtworksGrid');
+            grid.innerHTML = artworks.map(function(a) {
+                if (a.isClassic) {
+                    return '<div class="artwork-card" onclick="viewArtwork(\'' + a.id + '\')" data-category="' + a.category + '"><img src="' + a.image + '" alt="' + a.title + '" class="artwork-image"><h3 class="artwork-title">' + a.title + '</h3><p class="artwork-author">' + a.author + '</p><p class="artwork-meta">' + a.category + ' · ' + a.views + ' 阅读</p></div>';
+                } else {
+                    return '<div class="artwork-card" onclick="viewUserArtwork(' + a.id + ')" data-category="' + a.category + '"><img src="' + a.image + '" alt="' + a.title + '" class="artwork-image"><h3 class="artwork-title">' + a.title + '</h3><p class="artwork-author">' + a.author + '</p><p class="artwork-meta">' + a.category + ' · ' + a.views + ' 阅读</p></div>';
+                }
+            }).join('');
+        }
+
+        function viewUserArtwork(artworkId) { window.location.href = 'artwork.html?userArtwork=' + artworkId; }
+
+        function filterCategory(element, category) {
+            document.querySelectorAll('.category-tag').forEach(function(t) { t.classList.remove('active'); });
+            element.classList.add('active');
+            document.querySelectorAll('.artwork-card').forEach(function(card) {
+                card.style.display = (category === 'all' || card.getAttribute('data-category') === category) ? 'block' : 'none';
+            });
+        }
+
+        function viewArtwork(title) { window.location.href = 'artwork.html?title=' + encodeURIComponent(title); }
+
+        window.addEventListener('load', function() { loadAllArtworks(); });
+    </script>
+</body>
+</html>

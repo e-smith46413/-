@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="classic" data-font="medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品详情 - 墨韵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/ink-theme.css">
+</head>
+<body>
+    <div class="min-h-screen w-full relative overflow-hidden">
+        <div id="background" class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('public/background.jpg')"></div>
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <div class="ink-scatter scatter-brush-1"></div><div class="ink-scatter scatter-brush-2"></div>
+            <div class="ink-scatter scatter-brush-3"></div><div class="ink-scatter scatter-brush-4"></div>
+        </div>
+
+        <nav class="ink-nav">
+            <div class="flex items-center justify-between max-w-6xl mx-auto">
+                <a href="index.html" class="ink-nav-brand">墨韵</a>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="ink-nav-link">首页</a>
+                    <a href="browse.html" class="ink-nav-link">浏览作品</a>
+                    <a href="culture.html" class="ink-nav-link">书法文化</a>
+                    <a href="create.html" class="ink-nav-link">开始创作</a>
+                    <a href="profile.html" class="ink-nav-link">个人中心</a>
+                    <a href="settings.html" class="ink-nav-link">设置</a>
+                    <a href="login.html" class="ink-nav-link" onclick="handleLogout(event)">退出</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="relative z-10 pt-28 pb-12 px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-6 page-enter" style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button class="back-btn" onclick="window.location.href='index.html'"><span style="font-size: 20px; margin-right: 6px;">←</span>返回首页</button>
+                    <button class="back-btn" onclick="window.location.href='browse.html'"><span style="font-size: 20px; margin-right: 6px;">←</span>返回作品列表</button>
+                </div>
+
+                <div class="artwork-view-container page-enter" style="animation-delay: 0.1s;">
+                    <div class="text-center mb-6">
+                        <img id="artworkImage" src="" alt="作品图片" class="artwork-main-image" onclick="toggleZoom()">
+                    </div>
+                    <div class="text-center mb-4">
+                        <h1 id="artworkTitle" class="brush-title text-5xl text-gray-800 mb-2">作品标题</h1>
+                        <div class="flex items-center justify-center space-x-4 text-gray-700" style="font-family: 'ZCOOL XiaoWei', serif; opacity: 0.7;">
+                            <span id="artworkCategory">书法类型</span><span>·</span><span id="artworkViews">0 阅读</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center space-x-3 mb-8">
+                        <button class="action-btn" id="likeBtn" onclick="toggleLike()"><span style="font-size: 18px; margin-right: 6px;">❤️</span><span id="likeCount">0</span></button>
+                        <button class="action-btn" id="saveBtn" onclick="toggleSave()"><span style="font-size: 18px; margin-right: 6px;">⭐</span>收藏</button>
+                        <button class="action-btn" onclick="shareArtwork()"><span style="font-size: 18px; margin-right: 6px;">🔗</span>分享</button>
+                    </div>
+                </div>
+
+                <!-- ===== 作品详细介绍 ===== -->
+                <div id="artworkDescriptionContainer" class="page-enter" style="animation-delay: 0.15s; margin-bottom: 30px;">
+                    <div class="ink-divider mx-auto"></div>
+                    <h2 class="brush-title text-3xl text-gray-800 mb-4">作品介绍</h2>
+                    <div id="artworkDescription" class="text-gray-700" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 15px; line-height: 2; text-indent: 2em;">
+                        加载中...
+                    </div>
+                </div>
+
+                <div class="ink-divider mx-auto"></div>
+
+                <div class="author-info page-enter" style="animation-delay: 0.2s;">
+                    <div class="author-avatar" id="authorAvatar">范</div>
+                    <div class="flex-1">
+                        <h3 class="brush-title text-2xl text-gray-800" id="authorName">作者</h3>
+                        <p class="text-gray-700" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 14px; opacity: 0.7;" id="authorDesc">简介</p>
+                    </div>
+                    <button class="follow-btn" id="followBtn" onclick="toggleFollow()">关注</button>
+                </div>
+
+                <div class="ink-divider mx-auto"></div>
+
+                <div class="comment-section page-enter" style="animation-delay: 0.3s;">
+                    <h2 class="brush-title text-3xl text-gray-800 mb-6">评论</h2>
+                    <div class="comment-input-wrapper mb-8">
+                        <textarea class="comment-input" id="commentInput" placeholder="写下您的评论..." rows="1"></textarea>
+                        <button class="send-btn" onclick="submitComment()"><span style="font-size: 16px;">✉️</span></button>
+                    </div>
+                    <div id="commentList"></div>
+                </div>
+
+                <!-- ===== 返回首页 ===== -->
+                <div class="text-center mt-8 page-enter" style="animation-delay: 0.35s;">
+                    <div class="ink-divider mx-auto" style="width: 40%;"></div>
+                    <a href="index.html" class="back-btn" style="display: inline-flex; align-items: center; margin-top: 20px; font-size: 16px;"><span style="font-size: 20px; margin-right: 6px;">←</span>返回首页</a>
+                </div>
+            </div>
+        </div>
+        <div class="ink-seal">墨<br/>韵</div>
+
+    <!-- ===== Footer ===== -->
+    <div class="site-footer" style="position: relative; z-index: 10; border-top: 1px solid var(--ink-border); padding: 30px 20px 20px; margin-top: 60px; text-align: center;">
+        <div class="footer-links" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap;">
+            <a href="index.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">首页</a>
+            <a href="browse.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">浏览作品</a>
+            <a href="culture.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">书法文化</a>
+            <a href="create.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">开始创作</a>
+            <a href="profile.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">个人中心</a>
+            <a href="settings.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">设置</a>
+        </div>
+        <p style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-muted); line-height: 1.8;">© 2024 墨韵 · 水墨书法分享社区 &nbsp;|&nbsp; 传承中华文化，感悟笔墨之美</p>
+        <p style="font-family: 'ZCOOL XiaoWei', serif; font-size: 12px; color: var(--ink-text-muted); opacity: 0.6; margin-top: 4px;">本网站仅供学习交流使用</p>
+    </div>
+    </div>
+
+    <script src="js/shared.js"></script>
+    <script>
+        var artworkDescriptions = {
+            '岳阳楼记': '《岳阳楼记》是北宋文学家范仲淹的千古名篇，作于宋仁宗庆历六年（1046年）。全文通过描绘洞庭湖的壮丽景色，抒发了作者"不以物喜，不以己悲"的豁达胸怀和"先天下之忧而忧，后天下之乐而乐"的崇高理想。此作以行书书写，笔意流畅自然，墨色浓淡相宜，布局疏密有致，行气贯通，字里行间流露出深厚的文人气质。整幅作品气势恢宏而不失细腻，兼具思想深度与艺术魅力，堪称书法与文学完美结合的典范。',
+            '兰亭序': '《兰亭序》是东晋书法家王羲之的巅峰之作，被公认为"天下第一行书"。永和九年（353年）三月三日，王羲之与谢安等四十一位名士在会稽山阴的兰亭举行修禊集会，众人饮酒赋诗，王羲之为诗集作序。此帖笔法变化丰富，藏露含蓄，刚柔相济，被誉为"飘若浮云，矫若惊龙"。全篇二十八行、三百二十四字，字字精妙，其中二十多个"之"字各具姿态、无一雷同，展现了行书艺术的最高境界。',
+            '祭侄文稿': '《祭侄文稿》是唐代书法家颜真卿为追祭在安史之乱中殉国的侄子颜季明而作的祭文草稿，被后世誉为"天下第二行书"。此稿写于唐乾元元年（758年），颜真卿在极度悲愤中奋笔疾书，笔墨随情绪起伏跌宕，圈点涂改随处可见，却更显真挚感人。全篇笔势雄强豪放，墨色淋漓酣畅，情感的起伏直接影响着线条的轻重缓急。特别是写到"魂而有知"等句时，笔触愈发激荡奔放，将书法作为情感表达载体的功能发挥到了极致。',
+            '九成宫醴泉铭': '《九成宫醴泉铭》是唐代书法家欧阳询的代表作，被誉为"楷书极则"。此碑刻于唐贞观六年（632年），记载了唐太宗李世民在九成宫发现醴泉的故事。欧阳询的楷书结体险峻严谨、法度森严，笔画刚劲有力、转折分明，结构上疏密得当、收放自如。此碑是欧体楷书的典范之作，对后世楷书发展影响深远，至今仍被习书者奉为必临法帖。其艺术特色是平正中见险绝，规矩中寓变化。',
+            '自叙帖': '《自叙帖》是唐代草书大家怀素的代表作，被誉为"狂草巅峰之作"。此帖为怀素自述生平及学书经历的长篇草书作品，写于唐大历十二年（777年）。怀素的草书笔势连绵环绕、气势磅礴，运笔如龙蛇飞舞，线条奔放不羁。全篇布局大开大合，字与字之间常常连绵不断，形成一气呵成的整体气势。此帖充分展现了草书艺术"奔蛇走虺势入座，骤雨旋风声满堂"的独特魅力，被赞为"草书天下称独步"。',
+            '张迁碑': '《张迁碑》是东汉时期的隶书名品，全称《汉故谷城长张君表颂》，立于东汉中平三年（186年）。此碑结体方正茂密，用笔遒劲有力，笔画以方笔为主，蚕头雁尾、一波三折的隶书特征十分鲜明。张迁碑的字体在规整中见灵动，古朴中显雄强，体现了汉代隶书的成熟风貌和雄浑气度。其章法布局疏朗匀称，字距宽绰而行距紧密，形成独特的视觉效果，是学习隶书的重要范本。'
+        };
+
+        var artworks = {
+            '岳阳楼记': { image: 'public/岳阳楼记.jpg', title: '岳阳楼记', category: '行书', views: '12,580', likes: 2341, author: { name: '范仲淹', avatar: '范', desc: '北宋文学家、政治家', following: false }, description: artworkDescriptions['岳阳楼记'] },
+            '兰亭序': { image: 'public/兰亭序.jpg', title: '兰亭序', category: '行书', views: '15,234', likes: 3567, author: { name: '王羲之', avatar: '王', desc: '书圣，东晋书法家', following: true }, description: artworkDescriptions['兰亭序'] },
+            '祭侄文稿': { image: 'public/祭侄文稿.jpg', title: '祭侄文稿', category: '行书', views: '10,892', likes: 1876, author: { name: '颜真卿', avatar: '颜', desc: '唐代著名书法家', following: false }, description: artworkDescriptions['祭侄文稿'] },
+            '九成宫醴泉铭': { image: 'public/九成宫醴泉铭.jpg', title: '九成宫醴泉铭', category: '楷书', views: '9,456', likes: 1543, author: { name: '欧阳询', avatar: '欧', desc: '唐代书法家，楷书四大家之一', following: true }, description: artworkDescriptions['九成宫醴泉铭'] },
+            '自叙帖': { image: 'public/自叙帖.jpg', title: '自叙帖', category: '草书', views: '11,203', likes: 2109, author: { name: '怀素', avatar: '怀', desc: '唐代草书大家', following: false }, description: artworkDescriptions['自叙帖'] },
+            '张迁碑': { image: 'public/张迁碑.jpg', title: '张迁碑', category: '隶书', views: '8,764', likes: 1234, author: { name: '佚名', avatar: '佚', desc: '东汉佚名书法家', following: false }, description: artworkDescriptions['张迁碑'] }
+        };
+
+        var currentArtwork = null;
+        var isLiked = false;
+        var isSaved = false;
+        var commentIdCounter = 4;
+        var STORAGE_KEY_PREFIX = 'moyun_comments_';
+        var USER_ARTWORKS_STORAGE_KEY = 'moyun_user_artworks';
+        var SAVED_ARTWORKS_KEY = 'moyun_saved_artworks';
+        var currentArtworkId = null;
+        var isUserArtwork = false;
+        var comments = [];
+
+        var defaultComments = [
+            { id: 1, author: '墨友', avatar: '墨', content: '笔法精妙，结构严谨，真乃佳作！', time: '2天前', likes: 32, isLiked: false, isOwner: false, subComments: [{ id: 11, author: '书法爱好者', avatar: '爱', content: '同意！这幅字确实很有韵味。', time: '1天前', likes: 5, isLiked: false, isOwner: false }] },
+            { id: 2, author: '书道爱好者', avatar: '书', content: '墨色浓淡相宜，气韵生动。学习了！', time: '5天前', likes: 18, isLiked: false, isOwner: false, subComments: [] },
+            { id: 3, author: '我', avatar: '我', content: '这幅作品太好看了！临摹了好几遍。', time: '1周前', likes: 45, isLiked: false, isOwner: true, subComments: [] }
+        ];
+
+        function getStorageKey() { return STORAGE_KEY_PREFIX + (currentArtwork ? currentArtwork.title : 'default'); }
+
+        function saveCommentsToStorage() {
+            try { localStorage.setItem(getStorageKey(), JSON.stringify({ comments: comments, commentIdCounter: commentIdCounter })); } catch(e) {}
+        }
+
+        function loadCommentsFromStorage() {
+            try {
+                var stored = localStorage.getItem(getStorageKey());
+                if (stored) { var data = JSON.parse(stored); comments = data.comments || defaultComments; commentIdCounter = data.commentIdCounter || 4; }
+                else { comments = JSON.parse(JSON.stringify(defaultComments)); commentIdCounter = 4; }
+            } catch(e) { comments = JSON.parse(JSON.stringify(defaultComments)); commentIdCounter = 4; }
+        }
+
+        function goBack() { window.location.href = 'browse.html'; }
+
+        function initPage() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var artworkTitle = urlParams.get('title');
+            var userArtworkId = urlParams.get('userArtwork');
+            if (userArtworkId) { loadUserArtwork(parseInt(userArtworkId)); }
+            else {
+                currentArtwork = artworks[artworkTitle || '岳阳楼记'] || artworks['岳阳楼记'];
+                currentArtworkId = artworkTitle || '岳阳楼记'; isUserArtwork = false;
+                loadUserInteractionState(); setArtworkInfo(currentArtwork);
+                loadCommentsFromStorage(); renderComments();
+            }
+        }
+
+        function loadUserArtwork(artworkId) {
+            try {
+                var stored = localStorage.getItem(USER_ARTWORKS_STORAGE_KEY);
+                if (stored) {
+                    var userArtworks = JSON.parse(stored);
+                    var artwork = userArtworks.filter(function(a) { return a.id === artworkId; })[0];
+                    if (artwork) {
+                        currentArtworkId = artwork.id; isUserArtwork = true;
+                        currentArtwork = { image: artwork.image, title: artwork.title, category: artwork.category, views: artwork.views, likes: artwork.likes || 0, description: artwork.description || '', author: { name: artwork.author, avatar: artwork.avatar, desc: '墨韵社区创作者', following: false } };
+                        loadUserInteractionState(); setArtworkInfo(currentArtwork);
+                        loadCommentsFromStorage(); renderComments(); return;
+                    }
+                }
+                showToast('作品不存在或已被删除', 2000);
+                window.location.href = 'browse.html';
+            } catch(e) { showToast('加载作品失败', 2000); window.location.href = 'browse.html'; }
+        }
+
+        function loadUserInteractionState() {
+            isLiked = localStorage.getItem('moyun_liked_' + currentArtworkId) === 'true';
+            var savedList = JSON.parse(localStorage.getItem(SAVED_ARTWORKS_KEY) || '[]');
+            isSaved = savedList.indexOf(currentArtworkId) !== -1;
+        }
+
+        function saveLikeState() { localStorage.setItem('moyun_liked_' + currentArtworkId, isLiked.toString()); }
+
+        function saveSaveState() {
+            var savedList = JSON.parse(localStorage.getItem(SAVED_ARTWORKS_KEY) || '[]');
+            var idx = savedList.indexOf(currentArtworkId);
+            if (isSaved && idx === -1) savedList.push(currentArtworkId);
+            else if (!isSaved && idx !== -1) savedList.splice(idx, 1);
+            localStorage.setItem(SAVED_ARTWORKS_KEY, JSON.stringify(savedList));
+        }
+
+        function setArtworkInfo(artwork) {
+            document.getElementById('artworkImage').src = artwork.image;
+            document.getElementById('artworkTitle').textContent = artwork.title;
+            document.getElementById('artworkCategory').textContent = artwork.category;
+            document.getElementById('artworkViews').textContent = artwork.views + ' 阅读';
+            document.getElementById('likeCount').textContent = artwork.likes;
+            var descEl = document.getElementById('artworkDescription');
+            if (artwork.description) {
+                descEl.textContent = artwork.description;
+            } else {
+                descEl.textContent = '这幅作品展现了独特的书法艺术魅力，笔法精妙、气韵生动，是作者艺术造诣的集中体现。';
+            }
+            document.getElementById('authorName').textContent = artwork.author.name;
+            document.getElementById('authorAvatar').textContent = artwork.author.avatar;
+            document.getElementById('authorDesc').textContent = artwork.author.desc;
+            if (artwork.author.following) { document.getElementById('followBtn').classList.add('following'); document.getElementById('followBtn').textContent = '已关注'; }
+            var likeBtn = document.getElementById('likeBtn');
+            if (isLiked) likeBtn.classList.add('liked'); else likeBtn.classList.remove('liked');
+            var saveBtn = document.getElementById('saveBtn');
+            if (isSaved) { saveBtn.classList.add('saved'); saveBtn.innerHTML = '<span style="font-size: 18px; margin-right: 6px;">⭐</span>已收藏'; }
+            else { saveBtn.classList.remove('saved'); saveBtn.innerHTML = '<span style="font-size: 18px; margin-right: 6px;">⭐</span>收藏'; }
+        }
+
+        function toggleLike() {
+            isLiked = !isLiked;
+            var btn = document.getElementById('likeBtn'), count = document.getElementById('likeCount');
+            if (isLiked) { btn.classList.add('liked'); count.textContent = currentArtwork.likes + 1; currentArtwork.likes++; }
+            else { btn.classList.remove('liked'); count.textContent = currentArtwork.likes; currentArtwork.likes--; }
+            if (isUserArtwork) { saveLikeState(); saveUserArtworkLikes(); }
+        }
+
+        function saveUserArtworkLikes() {
+            try {
+                var stored = localStorage.getItem(USER_ARTWORKS_STORAGE_KEY);
+                if (stored) {
+                    var userArtworks = JSON.parse(stored);
+                    var idx = -1;
+                    for (var i = 0; i < userArtworks.length; i++) { if (userArtworks[i].id === currentArtworkId) { idx = i; break; } }
+                    if (idx !== -1) { userArtworks[idx].likes = currentArtwork.likes; localStorage.setItem(USER_ARTWORKS_STORAGE_KEY, JSON.stringify(userArtworks)); }
+                }
+            } catch(e) {}
+        }
+
+        function toggleSave() { isSaved = !isSaved; var btn = document.getElementById('saveBtn');
+            if (isSaved) { btn.classList.add('saved'); btn.innerHTML = '<span style="font-size: 18px; margin-right: 6px;">⭐</span>已收藏'; }
+            else { btn.classList.remove('saved'); btn.innerHTML = '<span style="font-size: 18px; margin-right: 6px;">⭐</span>收藏'; }
+            saveSaveState(); }
+
+        function toggleFollow() { var btn = document.getElementById('followBtn');
+            if (btn.classList.contains('following')) { btn.classList.remove('following'); btn.textContent = '关注'; }
+            else { btn.classList.add('following'); btn.textContent = '已关注'; } }
+
+        function shareArtwork() {
+            if (navigator.share) { navigator.share({ title: currentArtwork.title, text: '我在墨韵发现了一幅很棒的书法作品：' + currentArtwork.title, url: window.location.href }); }
+            else { showToast('链接已复制！', 2000); } }
+
+        function toggleZoom() { var img = document.getElementById('artworkImage');
+            if (img.style.cursor === 'zoom-out') { img.style.cursor = 'zoom-in'; img.style.maxHeight = '70vh'; img.style.maxWidth = '100%'; }
+            else { img.style.cursor = 'zoom-out'; img.style.maxHeight = 'none'; img.style.maxWidth = 'none'; } }
+
+        function renderComments() { document.getElementById('commentList').innerHTML = comments.map(renderSingleComment).join(''); }
+
+        function renderSingleComment(comment) {
+            var subHtml = '';
+            if (comment.subComments && comment.subComments.length > 0) {
+                subHtml = comment.subComments.map(function(sc) {
+                    return '<div class="sub-comment"><div class="flex items-start"><div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(50,40,30,0.12); display: flex; align-items: center; justify-content: center; font-family: \'Ma Shan Zheng\', cursive; font-size: 1rem; color: rgba(50,40,30,0.7); margin-right: 10px;">' + sc.avatar + '</div><div class="flex-1"><div class="flex items-center justify-between mb-1"><span style="font-family: \'Ma Shan Zheng\', cursive; font-size: 1rem; color: rgba(50,40,30,0.9);">' + sc.author + '</span><span class="comment-meta">' + sc.time + '</span></div><p style="font-family: \'ZCOOL XiaoWei\', serif; font-size: 13px; color: rgba(50,40,30,0.8); line-height: 1.6;" id="subCommentContent-' + sc.id + '">' + sc.content + '</p><div class="flex items-center space-x-3 mt-1"><button class="comment-action-btn' + (sc.isLiked ? ' liked' : '') + '" onclick="toggleSubCommentLike(' + comment.id + ',' + sc.id + ')">❤️ ' + sc.likes + '</button><button class="comment-action-btn" onclick="startReplyToComment(' + comment.id + ',\'' + sc.author + '\')">回复</button>' + (sc.isOwner ? '<button class="comment-action-btn" onclick="editSubComment(' + comment.id + ',' + sc.id + ')">编辑</button><button class="comment-action-btn" onclick="deleteSubComment(' + comment.id + ',' + sc.id + ')">删除</button>' : '') + '</div></div></div></div>';
+                }).join('');
+            }
+            return '<div class="comment-item" id="comment-' + comment.id + '"><div class="flex items-start"><div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(50,40,30,0.12); display: flex; align-items: center; justify-content: center; font-family: \'Ma Shan Zheng\', cursive; font-size: 1.2rem; color: rgba(50,40,30,0.7); margin-right: 12px;">' + comment.avatar + '</div><div class="flex-1"><div class="flex items-center justify-between mb-2"><span style="font-family: \'Ma Shan Zheng\', cursive; font-size: 1.1rem; color: rgba(50,40,30,0.9);">' + comment.author + '</span><span class="comment-meta">' + comment.time + '</span></div><div id="commentContentWrapper-' + comment.id + '"><p style="font-family: \'ZCOOL XiaoWei\', serif; font-size: 14px; color: rgba(50,40,30,0.8); line-height: 1.8;" id="commentContent-' + comment.id + '">' + comment.content + '</p></div><div class="flex items-center space-x-4 mt-2"><button class="comment-action-btn' + (comment.isLiked ? ' liked' : '') + '" onclick="toggleCommentLike(' + comment.id + ')">❤️ ' + comment.likes + '</button><button class="comment-action-btn" onclick="startReplyToComment(' + comment.id + ',\'' + comment.author + '\')">回复</button>' + (comment.isOwner ? '<button class="comment-action-btn" onclick="editComment(' + comment.id + ')">编辑</button><button class="comment-action-btn" onclick="deleteComment(' + comment.id + ')">删除</button>' : '') + '</div><div class="reply-input-wrapper" id="replyInputWrapper-' + comment.id + '"><div class="flex items-end gap-2"><textarea class="reply-input" id="replyInput-' + comment.id + '" placeholder="回复 ' + comment.author + '..." rows="1"></textarea><button class="send-btn" onclick="submitReply(' + comment.id + ')"><span style="font-size: 14px;">✉️</span></button></div></div>' + subHtml + '</div></div></div>';
+        }
+
+        function submitComment() { var input = document.getElementById('commentInput'); var content = input.value.trim(); if (!content) { showToast('请输入评论内容', 2000); return; }
+            comments.unshift({ id: commentIdCounter++, author: '我', avatar: '我', content: content, time: '刚刚', likes: 0, isLiked: false, isOwner: true, subComments: [] });
+            input.value = ''; saveCommentsToStorage(); renderComments(); }
+
+        function toggleCommentLike(commentId) { var c = null; for (var i = 0; i < comments.length; i++) { if (comments[i].id === commentId) { c = comments[i]; break; } }
+            if (c) { c.isLiked = !c.isLiked; c.likes += c.isLiked ? 1 : -1; saveCommentsToStorage(); renderComments(); } }
+
+        function toggleSubCommentLike(commentId, subCommentId) { var c = null; for (var i = 0; i < comments.length; i++) { if (comments[i].id === commentId) { c = comments[i]; break; } }
+            if (c && c.subComments) { var sc = null; for (var j = 0; j < c.subComments.length; j++) { if (c.subComments[j].id === subCommentId) { sc = c.subComments[j]; break; } }
+                if (sc) { sc.isLiked = !sc.isLiked; sc.likes += sc.isLiked ? 1 : -1; saveCommentsToStorage(); renderComments(); } } }
+
+        function deleteComment(commentId) { if (confirm('确定要删除这条评论吗？')) { comments = comments.filter(function(c) { return c.id !== commentId; }); saveCommentsToStorage(); renderComments(); } }
+
+        function deleteSubComment(commentId, subCommentId) { if (confirm('确定要删除这条回复吗？')) { var c = null; for (var i = 0; i < comments.length; i++) { if (comments[i].id === commentId) { c = comments[i]; break; } }
+            if (c && c.subComments) { c.subComments = c.subComments.filter(function(sc) { return sc.id !== subCommentId; }); saveCommentsToStorage(); renderComments(); } } }
+
+        function editComment(commentId) { var c = null; for (var i = 0; i < comments.length; i++) { if (comments[i].id === commentId) { c = comments[i]; break; } }
+            if (!c) return; document.getElementById('commentContentWrapper-' + commentId).innerHTML = '<textarea class="edit-input" id="editInput-' + commentId + '" rows="3">' + c.content + '</textarea><div class="flex items-center gap-2 mt-2"><button class="action-btn" style="padding: 6px 16px; font-size: 12px;" onclick="saveEditComment(' + commentId + ')">保存</button><button class="action-btn" style="padding: 6px 16px; font-size: 12px;" onclick="cancelEditComment(' + commentId + ')">取消</button></div>'; }
+
+        function cancelEditComment(commentId) { renderComments(); }
+
+        function saveEditComment(commentId) { var ei = document.getElementById('editInput-' + commentId); var nc = ei.value.trim(); if (!nc) { showToast('评论内容不能为空', 2000); return; }
+            var c = null; for (var i = 0; i < comments.length; i++) { if (comments[i].id === commentId) { c = comments[i]; break; } }
+            if (c) { c.content = nc; saveCommentsToStorage(); renderComments(); } }
+
+        function editSubComment(commentId, subCommentId) { renderComments(); setTimeout(function() { var ce = document.getElementById('subCommentContent-' + subCommentId); if (ce) { var p = ce.parentElement; var c = null; for (var i = 0; i < comments.length; i++) { if (comments[i].id === commentId) { c = comments[i]; break; } }
+            if (c && c.subComments) { var sc = null; for (var j = 0; j < c.subComments.length; j++) { if (c.subComments[j].id === subCommentId) { sc = c.subComments[j]; break; } }
+                if (sc) { p.innerHTML = '<textarea class="edit-input" id="editSubInput-' + subCommentId + '" rows="2">' + sc.content + '</textarea><div class="flex items-center gap-2 mt-2"><button class="comment-action-btn" onclick="saveEditSubComment(' + commentId + ',' + subCommentId + ')">保存</button><button class="comment-action-btn" onclick="renderComments()">取消</button></div>'; } } } }, 10); }
+
+        function saveEditSubComment(commentId, subCommentId) { var ei = document.getElementById('editSubInput-' + subCommentId); var nc = ei.value.trim(); if (!nc) { showToast('回复内容不能为空', 2000); return; }
+            var c = null; for (var i = 0; i < comments.length; i++) { if (comments[i].id === commentId) { c = comments[i]; break; } }
+            if (c && c.subComments) { var sc = null; for (var j = 0; j < c.subComments.length; j++) { if (c.subComments[j].id === subCommentId) { sc = c.subComments[j]; break; } }
+                if (sc) { sc.content = nc; saveCommentsToStorage(); renderComments(); } } }
+
+        function startReplyToComment(commentId, authorName) { document.querySelectorAll('.reply-input-wrapper').forEach(function(w) { w.classList.remove('show'); });
+            var rw = document.getElementById('replyInputWrapper-' + commentId); rw.classList.add('show');
+            document.getElementById('replyInput-' + commentId).placeholder = '回复 ' + authorName + '...'; document.getElementById('replyInput-' + commentId).focus(); }
+
+        function submitReply(commentId) { var ri = document.getElementById('replyInput-' + commentId); var content = ri.value.trim(); if (!content) { showToast('请输入回复内容', 2000); return; }
+            var c = null; for (var i = 0; i < comments.length; i++) { if (comments[i].id === commentId) { c = comments[i]; break; } }
+            if (c) { if (!c.subComments) c.subComments = [];
+                c.subComments.push({ id: commentIdCounter++, author: '我', avatar: '我', content: content, time: '刚刚', likes: 0, isLiked: false, isOwner: true });
+                saveCommentsToStorage(); renderComments(); } }
+
+        initPage();
+    </script>
+</body>
+</html>

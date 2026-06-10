@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="classic" data-font="medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开始创作 - 墨韵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/ink-theme.css">
+</head>
+<body>
+    <div class="min-h-screen w-full relative overflow-hidden">
+        <div id="background" class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('public/background.jpg')"></div>
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <div class="ink-scatter scatter-brush-1"></div><div class="ink-scatter scatter-brush-2"></div>
+            <div class="ink-scatter scatter-brush-3"></div><div class="ink-scatter scatter-brush-4"></div>
+        </div>
+
+        <nav class="ink-nav">
+            <div class="flex items-center justify-between max-w-6xl mx-auto">
+                <a href="index.html" class="ink-nav-brand">墨韵</a>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="ink-nav-link">首页</a>
+                    <a href="browse.html" class="ink-nav-link">浏览作品</a>
+                    <a href="culture.html" class="ink-nav-link">书法文化</a>
+                    <a href="create.html" class="ink-nav-link active">开始创作</a>
+                    <a href="profile.html" class="ink-nav-link">个人中心</a>
+                    <a href="settings.html" class="ink-nav-link">设置</a>
+                    <a href="login.html" class="ink-nav-link" onclick="handleLogout(event)">退出</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="relative z-10 pt-28 pb-12 px-6">
+            <div class="max-w-3xl mx-auto">
+                <div class="text-center mb-10 page-enter">
+                    <h1 class="brush-title text-6xl text-gray-800 mb-3">挥毫泼墨</h1>
+                    <p class="text-gray-700 text-xl" style="font-family: 'ZCOOL XiaoWei', serif; opacity: 0.7;">分享您的书法作品，传承中华文化</p>
+                    <div class="ink-divider mx-auto" style="width: 40%; margin-top: 30px;"></div>
+                </div>
+
+                <form id="uploadForm" class="space-y-8 page-enter" style="animation-delay: 0.1s;">
+                    <div>
+                        <label class="ink-write-label">上传作品</label>
+                        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                            <div class="upload-icon">✍️</div>
+                            <p class="upload-text">点击此处上传您的书法作品<br/>支持 JPG、PNG 格式<br/><small style="opacity: 0.6;">文件大小不超过 10MB</small></p>
+                        </div>
+                        <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
+                        <div class="preview-container" id="previewContainer">
+                            <p style="font-family: 'ZCOOL XiaoWei', serif; color: var(--ink-text-secondary); margin-bottom: 10px;">预览：</p>
+                            <img id="previewImage" class="preview-image" alt="预览">
+                        </div>
+                    </div>
+
+                    <div><label for="title" class="ink-write-label">作品标题</label><input type="text" id="title" name="title" class="ink-write-input" placeholder="请输入作品名称" required /></div>
+
+                    <div>
+                        <label for="category" class="ink-write-label">书法分类</label>
+                        <div class="select-wrapper">
+                            <select id="category" name="category" class="ink-select" required>
+                                <option value="">请选择书法类型</option>
+                                <option value="行书">行书</option><option value="楷书">楷书</option><option value="草书">草书</option>
+                                <option value="隶书">隶书</option><option value="篆书">篆书</option><option value="其他">其他</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div><label for="description" class="ink-write-label">作品描述</label><textarea id="description" name="description" class="ink-write-textarea" placeholder="分享您创作这幅作品的心得或背景故事..."></textarea></div>
+
+                    <div class="text-center pt-6"><button type="submit" class="ink-write-btn">发布作品</button></div>
+                </form>
+
+                <div class="text-center mt-8 page-enter" style="animation-delay: 0.2s;">
+                    <p style="font-family: 'ZCOOL XiaoWei', serif; font-size: 14px; color: rgba(50,40,30,0.6);">
+                        上传即表示您同意我们的 <a href="#" style="color: rgba(60,50,40,0.8); text-decoration: underline;" onclick="event.preventDefault(); showToast('社区规范详情请访问官方网站查阅', 3000);">社区规范</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="ink-seal">墨<br/>韵</div>
+    </div>
+
+    <!-- ===== Footer ===== -->
+    <div class="site-footer" style="position: relative; z-index: 10; border-top: 1px solid var(--ink-border); padding: 30px 20px 20px; margin-top: 60px; text-align: center;">
+        <div class="footer-links" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap;">
+            <a href="index.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">首页</a>
+            <a href="browse.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">浏览作品</a>
+            <a href="culture.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">书法文化</a>
+            <a href="create.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">开始创作</a>
+            <a href="profile.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">个人中心</a>
+            <a href="settings.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">设置</a>
+        </div>
+        <p style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-muted); line-height: 1.8;">© 2024 墨韵 · 水墨书法分享社区 &nbsp;|&nbsp; 传承中华文化，感悟笔墨之美</p>
+        <p style="font-family: 'ZCOOL XiaoWei', serif; font-size: 12px; color: var(--ink-text-muted); opacity: 0.6; margin-top: 4px;">本网站仅供学习交流使用</p>
+    </div>
+
+    <script src="js/shared.js"></script>
+    <script>
+        var ARTWORKS_STORAGE_KEY = 'moyun_user_artworks';
+        var artworkIdCounter = 100;
+
+        function initCreatePage() {
+            var stored = localStorage.getItem(ARTWORKS_STORAGE_KEY);
+            if (stored) {
+                var artworks = JSON.parse(stored);
+                artworkIdCounter = artworks.length > 0 ? Math.max.apply(null, artworks.map(function(a) { return a.id; })) + 1 : 100;
+            }
+        }
+
+        function saveArtworkToStorage(artwork) {
+            try {
+                var artworks = JSON.parse(localStorage.getItem(ARTWORKS_STORAGE_KEY) || '[]');
+                artworks.push(artwork);
+                localStorage.setItem(ARTWORKS_STORAGE_KEY, JSON.stringify(artworks));
+                return true;
+            } catch(e) { return false; }
+        }
+
+        function handleFileSelect(event) {
+            var file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 10 * 1024 * 1024) { showToast('文件大小不能超过 10MB', 2000); return; }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImage').src = e.target.result;
+                document.getElementById('previewContainer').classList.add('show');
+                document.getElementById('uploadZone').innerHTML = '<div class="upload-icon">✅</div><p class="upload-text">已选择: ' + file.name + '<br/><small style="opacity: 0.6;">点击可重新选择</small></p>';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        var uploadZone = document.getElementById('uploadZone');
+        uploadZone.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('dragover'); });
+        uploadZone.addEventListener('dragleave', function(e) { e.preventDefault(); this.classList.remove('dragover'); });
+        uploadZone.addEventListener('drop', function(e) {
+            e.preventDefault(); this.classList.remove('dragover');
+            var files = e.dataTransfer.files;
+            if (files.length > 0) { document.getElementById('fileInput').files = files; handleFileSelect({ target: { files: files } }); }
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var title = document.getElementById('title').value.trim();
+            var category = document.getElementById('category').value;
+            var description = document.getElementById('description').value.trim();
+            var fileInput = document.getElementById('fileInput');
+            if (!title) { showToast('请输入作品标题', 2000); return; }
+            if (!category) { showToast('请选择书法分类', 2000); return; }
+            if (fileInput.files.length === 0) { showToast('请上传作品图片', 2000); return; }
+
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var newArtwork = {
+                    id: artworkIdCounter++,
+                    image: e.target.result,
+                    title: title, category: category, description: description,
+                    author: '我', avatar: '我',
+                    time: new Date().toLocaleDateString('zh-CN'),
+                    timestamp: new Date().getTime(),
+                    views: Math.floor(Math.random() * 100) + 10,
+                    likes: 0
+                };
+                if (saveArtworkToStorage(newArtwork)) {
+                    showToast('作品发布成功！', 2000);
+                    document.getElementById('uploadForm').reset();
+                    document.getElementById('previewContainer').classList.remove('show');
+                    document.getElementById('uploadZone').innerHTML = '<div class="upload-icon">✍️</div><p class="upload-text">点击此处上传您的书法作品<br/>支持 JPG、PNG 格式<br/><small style="opacity: 0.6;">文件大小不超过 10MB</small></p>';
+                    setTimeout(function() { window.location.href = 'browse.html'; }, 1500);
+                } else { showToast('作品保存失败，请重试！', 2000); }
+            };
+            reader.onerror = function() { showToast('图片读取失败，请重试！', 2000); };
+            reader.readAsDataURL(file);
+        });
+
+        initCreatePage();
+    </script>
+</body>
+</html>

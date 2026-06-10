@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="classic" data-font="medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 墨韵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/ink-theme.css">
+</head>
+<body>
+    <div class="min-h-screen w-full relative overflow-hidden">
+        <div id="background" class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('public/background.jpg')"></div>
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <div class="ink-scatter scatter-brush-1"></div><div class="ink-scatter scatter-brush-2"></div>
+            <div class="ink-scatter scatter-brush-3"></div><div class="ink-scatter scatter-brush-4"></div>
+            <div class="ink-dot" style="top: 12%; left: 25%;"></div>
+            <div class="ink-dot" style="top: 25%; right: 20%; width: 6px; height: 6px;"></div>
+            <div class="ink-dot" style="bottom: 30%; left: 15%; width: 10px; height: 10px;"></div>
+            <div class="ink-dot" style="bottom: 15%; right: 25%;"></div>
+        </div>
+
+        <nav class="ink-nav">
+            <div class="flex items-center justify-between max-w-6xl mx-auto">
+                <a href="index.html" class="ink-nav-brand">墨韵</a>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="ink-nav-link">首页</a>
+                    <a href="browse.html" class="ink-nav-link">浏览作品</a>
+                    <a href="culture.html" class="ink-nav-link">书法文化</a>
+                    <a href="create.html" class="ink-nav-link">开始创作</a>
+                    <a href="profile.html" class="ink-nav-link active">个人中心</a>
+                    <a href="settings.html" class="ink-nav-link">设置</a>
+                    <a href="login.html" class="ink-nav-link" onclick="handleLogout(event)">退出</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="relative z-10 pt-28 pb-12 px-6">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-10 page-enter">
+                    <div class="profile-avatar" id="profileAvatar">墨</div>
+                    <h1 class="brush-title text-5xl text-gray-800 mb-2" id="profileName">墨韵</h1>
+                    <p class="text-gray-700" style="font-family: 'ZCOOL XiaoWei', serif; opacity: 0.65;" id="profileEmail">moyun@example.com</p>
+                    <div class="ink-divider mx-auto" style="width: 40%; margin-top: 25px;"></div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-5 mb-10 page-enter" style="animation-delay: 0.1s;">
+                    <div class="stat-mini-card"><div class="stat-mini-number" id="stat-posts">356</div><div class="stat-mini-label">作品</div></div>
+                    <div class="stat-mini-card"><div class="stat-mini-number" id="stat-likes">5,689</div><div class="stat-mini-label">获赞</div></div>
+                    <div class="stat-mini-card"><div class="stat-mini-number" id="stat-followers">1,024</div><div class="stat-mini-label">粉丝</div></div>
+                </div>
+
+                <div class="info-card page-enter" style="animation-delay: 0.2s;">
+                    <h2 class="brush-title text-4xl text-gray-800 mb-7">基本信息</h2>
+                    <div class="info-row"><span class="info-label">用户名</span><div class="flex items-center"><span class="info-value" id="info-username">墨韵</span><button class="info-edit ml-4" onclick="openEditModal('username')">编辑</button></div></div>
+                    <div class="info-row"><span class="info-label">昵称</span><div class="flex items-center"><span class="info-value" id="info-nickname">墨韵书生</span><button class="info-edit ml-4" onclick="openEditModal('nickname')">编辑</button></div></div>
+                    <div class="info-row"><span class="info-label">邮箱</span><div class="flex items-center"><span class="info-value" id="info-email">moyun@example.com</span><button class="info-edit ml-4" onclick="openEditModal('email')">编辑</button></div></div>
+                    <div class="info-row"><span class="info-label">个人简介</span><div class="flex items-center"><span class="info-value" id="info-bio" style="max-width: 260px;">热爱中国传统文化，专注于水墨艺术创作</span><button class="info-edit ml-4" onclick="openEditModal('bio')">编辑</button></div></div>
+                    <div class="info-row"><span class="info-label">加入时间</span><span class="info-value" id="info-joinDate">2024年1月1日</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="ink-seal">墨<br/>韵</div>
+
+    <!-- ===== Footer ===== -->
+    <div class="site-footer" style="position: relative; z-index: 10; border-top: 1px solid var(--ink-border); padding: 30px 20px 20px; margin-top: 60px; text-align: center;">
+        <div class="footer-links" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap;">
+            <a href="index.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">首页</a>
+            <a href="browse.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">浏览作品</a>
+            <a href="culture.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">书法文化</a>
+            <a href="create.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">开始创作</a>
+            <a href="profile.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">个人中心</a>
+            <a href="settings.html" style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-secondary); text-decoration: none;">设置</a>
+        </div>
+        <p style="font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; color: var(--ink-text-muted); line-height: 1.8;">© 2024 墨韵 · 水墨书法分享社区 &nbsp;|&nbsp; 传承中华文化，感悟笔墨之美</p>
+        <p style="font-family: 'ZCOOL XiaoWei', serif; font-size: 12px; color: var(--ink-text-muted); opacity: 0.6; margin-top: 4px;">本网站仅供学习交流使用</p>
+    </div>
+
+        <div class="modal-overlay" id="editModal">
+            <div class="modal-content">
+                <h3 class="brush-title text-3xl text-gray-800 mb-6" id="modalTitle">编辑</h3>
+                <input type="text" class="ink-write-input" id="editInput" placeholder="请输入新值">
+                <div class="flex justify-end space-x-3 mt-7">
+                    <button class="ink-write-btn ink-write-btn-secondary" onclick="closeEditModal()">取消</button>
+                    <button class="ink-write-btn" onclick="saveEdit()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/shared.js"></script>
+    <script>
+        var currentEditField = '';
+        var USER_INFO_KEY = 'moyun_user_info';
+        var fieldLabels = { 'username': '用户名', 'nickname': '昵称', 'email': '邮箱', 'bio': '个人简介' };
+        var defaultUserInfo = { 'username': '墨韵', 'nickname': '墨韵书生', 'email': 'moyun@example.com', 'bio': '热爱中国传统文化，专注于水墨艺术创作', 'joinDate': '2024年1月1日' };
+        var fieldValues = {};
+
+        function loadUserInfo() {
+            try {
+                var stored = localStorage.getItem(USER_INFO_KEY);
+                fieldValues = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(defaultUserInfo));
+            } catch(e) { fieldValues = JSON.parse(JSON.stringify(defaultUserInfo)); }
+
+            // 从注册数据加载
+            var savedEmail = getSavedEmail();
+            if (savedEmail) {
+                fieldValues['email'] = savedEmail;
+                var users = getRegisteredUsers();
+                var found = users.filter(function(u) { return u.email === savedEmail; })[0];
+                if (found) {
+                    if (found.username) fieldValues['username'] = found.username;
+                    // ★ 加入时间：用实际注册时间
+                    if (found.registeredAt) {
+                        var d = new Date(found.registeredAt);
+                        fieldValues['joinDate'] = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+                    }
+                }
+            }
+        }
+
+        function saveUserInfo() {
+            try { localStorage.setItem(USER_INFO_KEY, JSON.stringify(fieldValues)); } catch(e) {}
+        }
+
+        function updateDisplay() {
+            document.getElementById('info-username').textContent = fieldValues['username'] || defaultUserInfo['username'];
+            document.getElementById('info-nickname').textContent = fieldValues['nickname'] || defaultUserInfo['nickname'];
+            document.getElementById('info-email').textContent = fieldValues['email'] || defaultUserInfo['email'];
+            document.getElementById('info-bio').textContent = fieldValues['bio'] || defaultUserInfo['bio'];
+            document.getElementById('info-joinDate').textContent = fieldValues['joinDate'] || defaultUserInfo['joinDate'];
+            document.getElementById('profileName').textContent = fieldValues['nickname'] || fieldValues['username'] || defaultUserInfo['nickname'];
+            document.getElementById('profileEmail').textContent = fieldValues['email'] || defaultUserInfo['email'];
+            var username = fieldValues['username'] || defaultUserInfo['username'];
+            document.getElementById('profileAvatar').textContent = username.charAt(0);
+        }
+
+        // ========== 加载真实统计数据 ==========
+        function refreshStats() {
+            var totalPosts = 0;
+            var totalLikes = 0;
+            var followers = 0;
+
+            // 作品数 & 获赞数：从用户上传的作品中计算
+            try {
+                var stored = localStorage.getItem('moyun_user_artworks');
+                if (stored) {
+                    var artworks = JSON.parse(stored);
+                    totalPosts = artworks.length;
+                    artworks.forEach(function(a) { totalLikes += a.likes || 0; });
+                }
+            } catch(e) {}
+
+            // 粉丝数：先从持久化数据中读取，否则模拟一个与作品数关联的值
+            try {
+                var profile = JSON.parse(localStorage.getItem(USER_INFO_KEY) || '{}');
+                if (profile.followers !== undefined) {
+                    followers = profile.followers;
+                } else {
+                    // 首次：基于作品数生成合理初始值（每件作品约3个粉丝）
+                    followers = totalPosts > 0 ? totalPosts * 3 + Math.floor(Math.random() * 10) : 0;
+                    profile.followers = followers;
+                    localStorage.setItem(USER_INFO_KEY, JSON.stringify(profile));
+                }
+            } catch(e) { followers = 0; }
+
+            document.getElementById('stat-posts').textContent = totalPosts;
+            document.getElementById('stat-likes').textContent = totalLikes.toLocaleString();
+            document.getElementById('stat-followers').textContent = followers.toLocaleString();
+        }
+
+        refreshStats();
+
+        function openEditModal(field) {
+            currentEditField = field;
+            document.getElementById('modalTitle').textContent = '编辑' + fieldLabels[field];
+            document.getElementById('editInput').value = fieldValues[field] || defaultUserInfo[field] || '';
+            document.getElementById('editModal').classList.add('show');
+            document.getElementById('editInput').focus();
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+            document.getElementById('editInput').value = '';
+            currentEditField = '';
+        }
+
+        function saveEdit() {
+            var newValue = document.getElementById('editInput').value.trim();
+            if (!newValue) { showToast('请输入有效的值', 2000); return; }
+            fieldValues[currentEditField] = newValue;
+            saveUserInfo();
+            updateDisplay();
+            showToast(fieldLabels[currentEditField] + '已更新', 2000);
+            closeEditModal();
+        }
+
+        document.getElementById('editModal').addEventListener('click', function(e) { if (e.target === this) closeEditModal(); });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeEditModal(); });
+
+        loadUserInfo();
+        updateDisplay();
+    </script>
+</body>
+</html>
