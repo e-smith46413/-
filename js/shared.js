@@ -232,6 +232,55 @@ function getRegisteredUsers() {
   try { return JSON.parse(localStorage.getItem('moyun_users') || '[]'); } catch(e) { return []; }
 }
 
+// ========== 动态活动追踪 ==========
+var ACTIVITY_KEY = 'moyun_activities';
+
+function getActivities() {
+  try { return JSON.parse(localStorage.getItem(ACTIVITY_KEY) || '[]'); } catch(e) { return []; }
+}
+
+function addActivity(type, title, detail) {
+  try {
+    var activities = getActivities();
+    activities.unshift({
+      id: Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+      type: type,
+      title: title,
+      detail: detail || '',
+      timestamp: Date.now()
+    });
+    if (activities.length > 50) activities = activities.slice(0, 50);
+    localStorage.setItem(ACTIVITY_KEY, JSON.stringify(activities));
+  } catch(e) {}
+}
+
+function getTimeAgo(timestamp) {
+  var diff = Date.now() - timestamp;
+  var seconds = Math.floor(diff / 1000);
+  if (seconds < 60) return '刚刚';
+  var minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return minutes + ' 分钟前';
+  var hours = Math.floor(minutes / 60);
+  if (hours < 24) return hours + ' 小时前';
+  var days = Math.floor(hours / 24);
+  if (days < 30) return days + ' 天前';
+  return new Date(timestamp).toLocaleDateString('zh-CN');
+}
+
+function getCurrentDisplayName() {
+  try {
+    var savedEmail = getSavedEmail();
+    if (savedEmail) {
+      var users = getRegisteredUsers();
+      for (var i = 0; i < users.length; i++) {
+        if (users[i].email === savedEmail) return users[i].username || savedEmail.split('@')[0];
+      }
+      return savedEmail.split('@')[0];
+    }
+  } catch(e) {}
+  return '墨客';
+}
+
 // ========== 验证登录密码 ==========
 function verifyLogin(email, password) {
   var users = getRegisteredUsers();

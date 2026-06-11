@@ -178,6 +178,7 @@
                 };
                 if (saveArtworkToStorage(newArtwork)) {
                     showToast('作品发布成功！', 2000);
+                    addActivity('publish', '发布了新作品《' + title + '》');
                     document.getElementById('uploadForm').reset();
                     document.getElementById('previewContainer').classList.remove('show');
                     var statusEl = document.getElementById('fileStatus');
