@@ -274,7 +274,8 @@
         function toggleLike() {
             isLiked = !isLiked;
             var btn = document.getElementById('likeBtn'), count = document.getElementById('likeCount');
-            if (isLiked) { btn.classList.add('liked'); count.textContent = currentArtwork.likes + 1; currentArtwork.likes++; addActivity('like', '赞了作品《' + currentArtwork.title + '》'); }
+            if (isLiked) { btn.classList.add('liked'); count.textContent = currentArtwork.likes + 1; currentArtwork.likes++;
+                if (isUserArtwork) addActivity('like', '赞了你的作品《' + currentArtwork.title + '》'); }
             else { btn.classList.remove('liked'); count.textContent = currentArtwork.likes; currentArtwork.likes--; }
             if (isUserArtwork) { saveLikeState(); saveUserArtworkLikes(); }
         }
@@ -292,7 +293,8 @@
         }
 
         function toggleSave() { isSaved = !isSaved; var btn = document.getElementById('saveBtn');
-            if (isSaved) { btn.classList.add('saved'); btn.innerHTML = '<span style="font-size: 18px; margin-right: 6px;">⭐</span>已收藏'; addActivity('save', '收藏了作品《' + currentArtwork.title + '》'); }
+            if (isSaved) { btn.classList.add('saved'); btn.innerHTML = '<span style="font-size: 18px; margin-right: 6px;">⭐</span>已收藏';
+                if (isUserArtwork) addActivity('save', '收藏了你的作品《' + currentArtwork.title + '》'); }
             else { btn.classList.remove('saved'); btn.innerHTML = '<span style="font-size: 18px; margin-right: 6px;">⭐</span>收藏'; }
             saveSaveState(); }
 
@@ -304,7 +306,7 @@
             try {
                 if (typeof navigator.share === 'function') {
                     navigator.share({ title: currentArtwork.title, text: '我在墨韵发现了一幅很棒的书法作品：' + currentArtwork.title, url: window.location.href }).then(function() {
-                        addActivity('share', '分享了作品《' + currentArtwork.title + '》');
+                        if (isUserArtwork) addActivity('share', '分享了你的作品《' + currentArtwork.title + '》');
                     }).catch(function() {});
                     return;
                 }
@@ -313,7 +315,7 @@
         }
 
         function shareToQQ() {
-            addActivity('share', '分享了作品《' + currentArtwork.title + '》');
+            if (isUserArtwork) addActivity('share', '分享了你的作品《' + currentArtwork.title + '》');
             var url = encodeURIComponent(window.location.href);
             var title = encodeURIComponent(currentArtwork.title + ' - 墨韵书法');
             var desc = encodeURIComponent('我在墨韵发现了一幅很棒的书法作品：' + currentArtwork.title);
@@ -328,12 +330,12 @@
         }
 
         function shareToWeChat() {
-            addActivity('share', '分享了作品《' + currentArtwork.title + '》');
+            if (isUserArtwork) addActivity('share', '分享了你的作品《' + currentArtwork.title + '》');
             copyLinkOnly('链接已复制，打开微信粘贴分享给好友');
         }
 
         function shareToGmail() {
-            addActivity('share', '分享了作品《' + currentArtwork.title + '》');
+            if (isUserArtwork) addActivity('share', '分享了你的作品《' + currentArtwork.title + '》');
             var url = encodeURIComponent(window.location.href);
             var subject = encodeURIComponent(currentArtwork.title + ' - 墨韵书法作品');
             var body = encodeURIComponent('我在墨韵发现了一幅很棒的书法作品：' + currentArtwork.title + '\n\n' + window.location.href);
