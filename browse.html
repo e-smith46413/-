@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>浏览作品 - 墨韵</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles/moyun.css">
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/ink-theme.css">
 </head>
 <body>
     <div class="min-h-screen w-full relative overflow-hidden">
-        <div id="background" class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('public/background.jpg')"></div>
+        <div id="background" class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('public/background.webp')"></div>
         <div class="absolute inset-0 pointer-events-none overflow-hidden">
             <div class="ink-scatter scatter-brush-1"></div><div class="ink-scatter scatter-brush-2"></div>
             <div class="ink-scatter scatter-brush-3"></div><div class="ink-scatter scatter-brush-4"></div>
@@ -76,12 +78,12 @@
         var ARTWORKS_STORAGE_KEY = 'moyun_user_artworks';
 
         var classicArtworks = [
-            { id: '岳阳楼记', title: '岳阳楼记', author: '范仲淹', category: '行书', views: '12,580', image: 'public/岳阳楼记.jpg', timestamp: new Date('2024-01-15').getTime(), isClassic: true },
-            { id: '兰亭序', title: '兰亭序', author: '王羲之', category: '行书', views: '15,234', image: 'public/兰亭序.jpg', timestamp: new Date('2024-01-10').getTime(), isClassic: true },
-            { id: '祭侄文稿', title: '祭侄文稿', author: '颜真卿', category: '行书', views: '10,892', image: 'public/祭侄文稿.jpg', timestamp: new Date('2024-01-20').getTime(), isClassic: true },
+            { id: '岳阳楼记', title: '岳阳楼记', author: '范仲淹', category: '行书', views: '12,580', image: 'public/岳阳楼记.webp', timestamp: new Date('2024-01-15').getTime(), isClassic: true },
+            { id: '兰亭序', title: '兰亭序', author: '王羲之', category: '行书', views: '15,234', image: 'public/兰亭序.webp', timestamp: new Date('2024-01-10').getTime(), isClassic: true },
+            { id: '祭侄文稿', title: '祭侄文稿', author: '颜真卿', category: '行书', views: '10,892', image: 'public/祭侄文稿.webp', timestamp: new Date('2024-01-20').getTime(), isClassic: true },
             { id: '九成宫醴泉铭', title: '九成宫醴泉铭', author: '欧阳询', category: '楷书', views: '9,456', image: 'public/九成宫醴泉铭.jpg', timestamp: new Date('2024-01-25').getTime(), isClassic: true },
-            { id: '自叙帖', title: '自叙帖', author: '怀素', category: '草书', views: '11,203', image: 'public/自叙帖.jpg', timestamp: new Date('2024-02-01').getTime(), isClassic: true },
-            { id: '张迁碑', title: '张迁碑', author: '佚名', category: '隶书', views: '8,764', image: 'public/张迁碑.jpg', timestamp: new Date('2024-02-05').getTime(), isClassic: true }
+            { id: '自叙帖', title: '自叙帖', author: '怀素', category: '草书', views: '11,203', image: 'public/自叙帖.webp', timestamp: new Date('2024-02-01').getTime(), isClassic: true },
+            { id: '张迁碑', title: '张迁碑', author: '佚名', category: '隶书', views: '8,764', image: 'public/张迁碑.webp', timestamp: new Date('2024-02-05').getTime(), isClassic: true }
         ];
 
         function loadAllArtworks() {
@@ -105,9 +107,9 @@
             var grid = document.getElementById('allArtworksGrid');
             grid.innerHTML = artworks.map(function(a) {
                 if (a.isClassic) {
-                    return '<div class="artwork-card" onclick="viewArtwork(\'' + a.id + '\')" data-category="' + a.category + '"><img src="' + a.image + '" alt="' + a.title + '" class="artwork-image"><h3 class="artwork-title">' + a.title + '</h3><p class="artwork-author">' + a.author + '</p><p class="artwork-meta">' + a.category + ' · ' + a.views + ' 阅读</p></div>';
+                    return '<div class="artwork-card" onclick="viewArtwork(\'' + a.id + '\')" data-category="' + a.category + '"><img loading="lazy" src="' + a.image + '" alt="' + a.title + '" class="artwork-image"><h3 class="artwork-title">' + a.title + '</h3><p class="artwork-author">' + a.author + '</p><p class="artwork-meta">' + a.category + ' · ' + a.views + ' 阅读</p></div>';
                 } else {
-                    return '<div class="artwork-card" onclick="viewUserArtwork(' + a.id + ')" data-category="' + a.category + '"><img src="' + a.image + '" alt="' + a.title + '" class="artwork-image"><h3 class="artwork-title">' + a.title + '</h3><p class="artwork-author">' + a.author + '</p><p class="artwork-meta">' + a.category + ' · ' + a.views + ' 阅读</p></div>';
+                    return '<div class="artwork-card" onclick="viewUserArtwork(' + a.id + ')" data-category="' + a.category + '"><img loading="lazy" src="' + a.image + '" alt="' + a.title + '" class="artwork-image"><h3 class="artwork-title">' + a.title + '</h3><p class="artwork-author">' + a.author + '</p><p class="artwork-meta">' + a.category + ' · ' + a.views + ' 阅读</p></div>';
                 }
             }).join('');
         }

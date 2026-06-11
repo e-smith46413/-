@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>书法文化 - 墨韵</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles/moyun.css">
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/ink-theme.css">
     <style>
         /* ===== 详情内容页专属样式 ===== */
         .culture-hero {
@@ -186,7 +188,7 @@
 </head>
 <body>
     <div class="min-h-screen w-full relative overflow-hidden">
-        <div id="background" class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('public/background.jpg')"></div>
+        <div id="background" class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('public/background.webp')"></div>
         <div class="absolute inset-0 pointer-events-none overflow-hidden">
             <div class="ink-scatter scatter-brush-1"></div><div class="ink-scatter scatter-brush-2"></div>
             <div class="ink-scatter scatter-brush-3"></div><div class="ink-scatter scatter-brush-4"></div>
@@ -217,7 +219,7 @@
 
                 <!-- ===== 页面标题 / 横幅 ===== -->
                 <div class="culture-hero page-enter" style="animation-delay: 0.05s;">
-                    <img src="public/兰亭序.jpg" alt="中国书法艺术">
+                    <img loading="lazy" src="public/兰亭序.webp" alt="中国书法艺术">
                     <div class="culture-hero-overlay">
                         <h1>中国书法文化</h1>
                         <p>千年传承 · 翰墨春秋</p>
@@ -232,22 +234,22 @@
 
                     <div class="culture-grid">
                         <div class="culture-card">
-                            <img src="public/张迁碑.jpg" alt="隶书 - 张迁碑">
+                            <img loading="lazy" src="public/张迁碑.webp" alt="隶书 - 张迁碑">
                             <h3>隶书</h3>
                             <p>隶书始于秦代，成熟于汉代，是汉字从古文字向今文字演变的重要转折。张迁碑为东汉隶书名品，结体方正、用笔遒劲，体现了汉代隶书的雄强气度。其笔画蚕头雁尾、一波三折，极具装饰美感。</p>
                         </div>
                         <div class="culture-card">
-                            <img src="public/九成宫醴泉铭.jpg" alt="楷书 - 九成宫醴泉铭">
+                            <img loading="lazy" src="public/九成宫醴泉铭.jpg" alt="楷书 - 九成宫醴泉铭">
                             <h3>楷书</h3>
                             <p>楷书又称真书、正书，由隶书演变而来。唐代是楷书的鼎盛时期，欧阳询的《九成宫醴泉铭》被誉为"楷书极则"，结体险峻严谨、法度森严，至今仍是学习楷书的典范。</p>
                         </div>
                         <div class="culture-card">
-                            <img src="public/兰亭序.jpg" alt="行书 - 兰亭序">
+                            <img loading="lazy" src="public/兰亭序.webp" alt="行书 - 兰亭序">
                             <h3>行书</h3>
                             <p>行书介于楷书与草书之间，既有楷书的规整，又有草书的流动。王羲之的《兰亭序》被公认为"天下第一行书"，其笔法变化丰富、气韵生动，展现了行书艺术的最高境界。</p>
                         </div>
                         <div class="culture-card">
-                            <img src="public/自叙帖.jpg" alt="草书 - 自叙帖">
+                            <img loading="lazy" src="public/自叙帖.webp" alt="草书 - 自叙帖">
                             <h3>草书</h3>
                             <p>草书是书法中最具艺术表现力的书体，追求笔墨的自由与情感的抒发。怀素的《自叙帖》是狂草的巅峰之作，笔势连绵环绕、气势磅礴，被赞为"草书天下称独步"。</p>
                         </div>
@@ -260,7 +262,7 @@
 
                     <div style="display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 30px;">
                         <div style="flex: 1; min-width: 280px;">
-                            <img src="public/岳阳楼记.jpg" alt="岳阳楼记" style="width: 100%; border-radius: 8px; border: 2px solid var(--ink-border);">
+                            <img loading="lazy" src="public/岳阳楼记.webp" alt="岳阳楼记" style="width: 100%; border-radius: 8px; border: 2px solid var(--ink-border);">
                         </div>
                         <div style="flex: 1.5; min-width: 280px;">
                             <h3 style="font-family: 'Ma Shan Zheng', cursive; font-size: 1.8rem; color: var(--ink-text); margin-bottom: 12px;">岳阳楼记</h3>
@@ -276,7 +278,7 @@
                             <p style="font-family: 'ZCOOL XiaoWei', serif; font-size: 15px; color: var(--ink-text-secondary); line-height: 2; text-indent: 2em;">全篇笔势雄强，墨色淋漓，情感的起伏直接体现在线条的轻重缓急之中。特别是写到"魂而有知"等句时，笔触愈发激荡，展现了书法艺术作为情感表达载体的最高境界。</p>
                         </div>
                         <div style="flex: 1; min-width: 280px;">
-                            <img src="public/祭侄文稿.jpg" alt="祭侄文稿" style="width: 100%; border-radius: 8px; border: 2px solid var(--ink-border);">
+                            <img loading="lazy" src="public/祭侄文稿.webp" alt="祭侄文稿" style="width: 100%; border-radius: 8px; border: 2px solid var(--ink-border);">
                         </div>
                     </div>
 

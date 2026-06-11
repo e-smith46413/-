@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首页 - 墨韵 · 水墨书法分享社区</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles/moyun.css">
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/ink-theme.css">
     <style>
         /* ===== 轮播图样式 ===== */
         .carousel-container {
@@ -159,7 +161,7 @@
 </head>
 <body>
     <div class="min-h-screen w-full relative overflow-hidden">
-        <div id="background" class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('public/background.jpg')"></div>
+        <div id="background" class="parallax-bg absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('public/background.webp')"></div>
         <div class="absolute inset-0 pointer-events-none overflow-hidden">
             <div class="ink-scatter scatter-brush-1"></div><div class="ink-scatter scatter-brush-2"></div>
             <div class="ink-scatter scatter-brush-3"></div><div class="ink-scatter scatter-brush-4"></div>
@@ -197,13 +199,13 @@
                 <!-- ===== 横幅轮播图 ===== -->
                 <div class="page-enter" style="animation-delay: 0.1s;">
                     <div class="carousel-container" id="carousel">
-                        <div class="carousel-slide active" style="background-image: url('public/岳阳楼记.jpg');">
+                        <div class="carousel-slide active" style="background-image: url('public/岳阳楼记.webp');">
                             <div class="carousel-overlay">
                                 <h3>岳阳楼记 · 范仲淹</h3>
                                 <p>"先天下之忧而忧，后天下之乐而乐"—— 行书经典名篇</p>
                             </div>
                         </div>
-                        <div class="carousel-slide" style="background-image: url('public/兰亭序.jpg');">
+                        <div class="carousel-slide" style="background-image: url('public/兰亭序.webp');">
                             <div class="carousel-overlay">
                                 <h3>兰亭序 · 王羲之</h3>
                                 <p>"天下第一行书"—— 书圣王羲之的巅峰之作</p>
@@ -215,7 +217,7 @@
                                 <p>楷书极则，唐代楷书之冠冕</p>
                             </div>
                         </div>
-                        <div class="carousel-slide" style="background-image: url('public/自叙帖.jpg');">
+                        <div class="carousel-slide" style="background-image: url('public/自叙帖.webp');">
                             <div class="carousel-overlay">
                                 <h3>自叙帖 · 怀素</h3>
                                 <p>狂草巅峰，笔走龙蛇，气势磅礴</p>
