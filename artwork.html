@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>作品详情 - 墨韵</title>
+    <script>if(!JSON.parse(localStorage.getItem('moyun_auth')||'{}').loggedIn){window.location.href='login.html?redirect='+encodeURIComponent(window.location.href)}</script>
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +22,10 @@
         <nav class="ink-nav">
             <div class="flex items-center justify-between max-w-6xl mx-auto">
                 <a href="index.html" class="ink-nav-brand">墨韵</a>
-                <div class="flex items-center space-x-4">
+                <button class="nav-toggle" id="navToggle" onclick="toggleNav()" aria-label="菜单">
+                    <span></span><span></span><span></span>
+                </button>
+                <div class="nav-links" id="navLinks">
                     <a href="index.html" class="ink-nav-link">首页</a>
                     <a href="browse.html" class="ink-nav-link">浏览作品</a>
                     <a href="culture.html" class="ink-nav-link">书法文化</a>
@@ -297,10 +301,12 @@
             else { btn.classList.add('following'); btn.textContent = '已关注'; } }
 
         function shareArtwork() {
-            if (navigator.share) {
-                navigator.share({ title: currentArtwork.title, text: '我在墨韵发现了一幅很棒的书法作品：' + currentArtwork.title, url: window.location.href }).catch(function() {});
-                return;
-            }
+            try {
+                if (typeof navigator.share === 'function') {
+                    navigator.share({ title: currentArtwork.title, text: '我在墨韵发现了一幅很棒的书法作品：' + currentArtwork.title, url: window.location.href }).catch(function() {});
+                    return;
+                }
+            } catch(e) {}
             showShareModal();
         }
 
@@ -308,38 +314,64 @@
             var url = encodeURIComponent(window.location.href);
             var title = encodeURIComponent(currentArtwork.title + ' - 墨韵书法');
             var desc = encodeURIComponent('我在墨韵发现了一幅很棒的书法作品：' + currentArtwork.title);
-            window.open('https://connect.qq.com/widget/shareqq/index.html?title=' + title + '&url=' + url + '&desc=' + desc + '&summary=' + desc, '_blank', 'width=700,height=600');
+            try {
+                var win = window.open('https://connect.qq.com/widget/shareqq/index.html?title=' + title + '&url=' + url + '&desc=' + desc + '&summary=' + desc, '_blank', 'width=700,height=600');
+                if (!win || win.closed) {
+                    copyLinkOnly('链接已复制，打开QQ粘贴分享给好友');
+                }
+            } catch(e) {
+                copyLinkOnly('链接已复制，打开QQ粘贴分享给好友');
+            }
         }
 
         function shareToWeChat() {
-            var input = document.getElementById('shareLinkInput');
-            input.value = window.location.href;
-            input.select();
-            input.setSelectionRange(0, 99999);
-            copyShareLink();
-            showToast('链接已复制，打开微信粘贴分享给好友', 3500);
+            copyLinkOnly('链接已复制，打开微信粘贴分享给好友');
         }
 
         function shareToGmail() {
             var url = encodeURIComponent(window.location.href);
             var subject = encodeURIComponent(currentArtwork.title + ' - 墨韵书法作品');
             var body = encodeURIComponent('我在墨韵发现了一幅很棒的书法作品：' + currentArtwork.title + '\n\n' + window.location.href);
-            window.open('https://mail.google.com/mail/?view=cm&fs=1&to=&su=' + subject + '&body=' + body, '_blank');
+            try {
+                var win = window.open('https://mail.google.com/mail/?view=cm&fs=1&to=&su=' + subject + '&body=' + body, '_blank');
+                if (!win || win.closed) {
+                    copyLinkOnly('链接已复制，打开Gmail粘贴发送');
+                }
+            } catch(e) {
+                copyLinkOnly('链接已复制，打开Gmail粘贴发送');
+            }
+        }
+
+        function copyLinkOnly(msg) {
+            var input = document.getElementById('shareLinkInput');
+            input.value = window.location.href;
+            input.select();
+            input.setSelectionRange(0, 99999);
+            // 尝试复制，无论成功失败都提示
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(input.value).catch(function() {
+                    try { document.execCommand('copy'); } catch(e) {}
+                });
+            } else {
+                try { document.execCommand('copy'); } catch(e) {}
+            }
+            showToast(msg || '链接已复制', 3000);
+            closeShareModal();
         }
 
         function showShareModal() {
             var modal = document.getElementById('shareModal');
             var linkInput = document.getElementById('shareLinkInput');
             var hint = document.getElementById('shareHint');
+            if (!modal || !linkInput) return;
             linkInput.value = window.location.href;
             linkInput.select();
             linkInput.setSelectionRange(0, 99999);
             // 检测是否为 file:// 协议
             if (window.location.protocol === 'file:') {
-                hint.textContent = '提示：部分浏览器在本地文件下限制自动复制，请手动 Ctrl+C 复制';
-                hint.style.display = 'block';
+                if (hint) { hint.textContent = '提示：部分浏览器在本地文件下限制自动复制，请手动 Ctrl+C 复制'; hint.style.display = 'block'; }
             } else {
-                hint.style.display = 'none';
+                if (hint) hint.style.display = 'none';
             }
             modal.classList.add('show');
             // 弹出后自动聚焦让用户可以直接 Ctrl+C

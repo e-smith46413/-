@@ -186,6 +186,19 @@ function clearAuth() {
   try { localStorage.removeItem(AUTH_KEY); } catch(e) {}
 }
 
+// ========== 强制登录检查 ==========
+function requireAuth() {
+  if (!isLoggedIn()) {
+    var currentPage = window.location.href;
+    var loginUrl = 'login.html';
+    // 如果不在登录页/注册页，跳转并带上当前页面地址
+    if (currentPage.indexOf('login.html') === -1 && currentPage.indexOf('register.html') === -1) {
+      loginUrl += '?redirect=' + encodeURIComponent(currentPage);
+    }
+    window.location.href = loginUrl;
+  }
+}
+
 // ========== 退出登录 ==========
 function handleLogout(event) {
   if (event) event.preventDefault();
@@ -194,6 +207,25 @@ function handleLogout(event) {
     window.location.href = 'login.html';
   }
 }
+
+// ========== 手机导航切换 ==========
+function toggleNav() {
+  var links = document.getElementById('navLinks');
+  var toggle = document.getElementById('navToggle');
+  if (links) {
+    links.classList.toggle('show');
+    toggle.classList.toggle('active');
+  }
+}
+// 点击导航链接后自动关闭菜单
+document.addEventListener('click', function(e) {
+  var links = document.getElementById('navLinks');
+  var toggle = document.getElementById('navToggle');
+  if (links && links.classList.contains('show') && !links.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)) {
+    links.classList.remove('show');
+    toggle.classList.remove('active');
+  }
+});
 
 // ========== 获取注册用户列表 ==========
 function getRegisteredUsers() {
